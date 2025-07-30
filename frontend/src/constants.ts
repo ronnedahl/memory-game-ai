@@ -1,0 +1,4 @@
+
+export const NUM_IMAGES_TO_MEMORIZE = 10;
+export const TOTAL_IMAGES_IN_POOL = 20;
+export const MEMORIZE_DURATION_SECONDS = 10;

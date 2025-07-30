@@ -1,0 +1,5 @@
+{
+  "name": "Memory Matrix",
+  "description": "A memory training game where you are shown 10 pictures for 10 seconds. After they disappear, you must select the pictures you saw from a larger set to test your recall. The pictures are dynamically generated for a new challenge every time.",
+  "requestFramePermissions": []
+}
