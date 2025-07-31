@@ -23,7 +23,6 @@ export const errorHandler = (
     ...(err instanceof AppError && { statusCode: err.statusCode }),
   });
 
-  // Handle different error types
   if (err instanceof AppError) {
     res.status(err.statusCode).json({
       status: 'error',
@@ -33,7 +32,6 @@ export const errorHandler = (
     return;
   }
 
-  // Handle validation errors from Joi
   if (err.name === 'ValidationError') {
     res.status(400).json({
       status: 'error',
@@ -43,7 +41,6 @@ export const errorHandler = (
     return;
   }
 
-  // Handle MongoDB errors
   if (err.name === 'MongoError' || err.name === 'MongoServerError') {
     if ((err as any).code === 11000) {
       res.status(409).json({
@@ -54,7 +51,6 @@ export const errorHandler = (
     }
   }
 
-  // Default error response
   res.status(500).json({
     status: 'error',
     message: env.NODE_ENV === 'production' 
@@ -64,7 +60,6 @@ export const errorHandler = (
   });
 };
 
-// Async error wrapper to catch errors in async route handlers
 export const asyncHandler = (
   fn: (req: Request, res: Response, next: NextFunction) => Promise<any>
 ) => {
