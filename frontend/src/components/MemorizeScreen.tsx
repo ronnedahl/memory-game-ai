@@ -17,7 +17,7 @@ const MemorizeScreen: React.FC<MemorizeScreenProps> = ({ targetConcept, imagesTo
         <h2 className="text-3xl font-bold mb-4 text-cyan-300 text-center">{targetConcept}</h2>
         <Timer duration={displayDuration / 1000} onComplete={onTimeUp} />
         
-        <div className="mt-6 grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
+        <div className="mt-6 grid grid-cols-3 md:grid-cols-3 lg:grid-cols-5 gap-3 md:gap-4">
           {imagesToMemorize.map((image) => (
             <div
               key={image.id}
