@@ -7,7 +7,7 @@ const router = Router();
 router.use('/api', gameRoutes);
 
 // Root endpoint
-router.get('/', (req, res) => {
+router.get('/', (_req, res) => {
   res.json({
     status: 'success',
     message: 'Memory Game API',

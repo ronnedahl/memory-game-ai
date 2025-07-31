@@ -25,23 +25,22 @@ export const logger = winston.createLogger({
   format: logFormat,
   defaultMeta: { service: 'memory-game-backend' },
   transports: [
-    // Console transport with pretty formatting
+    
     new winston.transports.Console({
       format: env.NODE_ENV === 'production' ? logFormat : consoleFormat,
     }),
-    // File transport for errors
+   
     new winston.transports.File({
       filename: 'logs/error.log',
       level: 'error',
     }),
-    // File transport for combined logs
+    
     new winston.transports.File({
       filename: 'logs/combined.log',
     }),
   ],
 });
 
-// Create a stream object with a 'write' function for Morgan
 export const stream = {
   write: (message: string) => {
     logger.info(message.trim());

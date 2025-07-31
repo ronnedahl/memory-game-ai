@@ -7,18 +7,17 @@ export const apiLimiter = rateLimit({
   max: env.RATE_LIMIT_MAX_REQUESTS,
   standardHeaders: true,
   legacyHeaders: false,
-  handler: (req, res) => {
+  handler: (_req, _res) => {
     throw new RateLimitError('Too many requests, please try again later.');
   }
 });
 
-// Stricter rate limit for game creation
 export const gameCreationLimiter = rateLimit({
-  windowMs: 5 * 60 * 1000, // 5 minutes
-  max: 10, // 10 games per 5 minutes
+  windowMs: 5 * 60 * 1000, 
+  max: 10, 
   standardHeaders: true,
   legacyHeaders: false,
-  handler: (req, res) => {
+  handler: (_req, _res) => {
     throw new RateLimitError('Too many games created, please try again later.');
   }
 });

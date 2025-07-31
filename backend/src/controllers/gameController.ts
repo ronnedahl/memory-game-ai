@@ -12,7 +12,6 @@ export const gameController = {
     
     const game = await gameService.createGame({ difficulty, theme });
     
-    // Return game data for memory game
     const gameResponse = {
       id: game.id,
       difficulty: game.difficulty,
@@ -31,52 +30,58 @@ export const gameController = {
 
   getGame: asyncHandler(async (req: Request, res: Response) => {
     const { gameId } = req.params;
-    
-    const game = await gameService.getGame(gameId);
-    
-    // Only return full game data if completed
-    const gameResponse = game.completedAt ? {
-      ...game
-    } : {
-      id: game.id,
-      difficulty: game.difficulty,
-      theme: game.theme,
-      startedAt: game.startedAt,
-      displayDuration: game.displayDuration
-      // Don't reveal memory images until game is completed
-    };
-    
-    res.json({
-      status: 'success',
-      data: gameResponse
-    });
+
+    if (!gameId) {
+      res.status(400).json({ status: 'error', message: 'Game ID is required' });
+    } else {
+      const game = await gameService.getGame(gameId);
+
+      const gameResponse = game.completedAt ? {
+        ...game
+      } : {
+        id: game.id,
+        difficulty: game.difficulty,
+        theme: game.theme,
+        startedAt: game.startedAt,
+        displayDuration: game.displayDuration
+      };
+      
+      res.json({
+        status: 'success',
+        data: gameResponse
+      });
+    }
   }),
 
   submitGame: asyncHandler(async (req: Request, res: Response) => {
     const { gameId } = req.params;
     const { selectedImageIds, timeSpent } = req.body;
     
-    logger.info('Submitting game', { gameId, selectedImageIds });
+    if (!gameId) {
+      res.status(400).json({ status: 'error', message: 'Game ID is required' });
+    } else {
+      logger.info('Submitting game', { gameId, selectedImageIds });
     
-    const game = await gameService.submitGame({
-      gameId,
-      selectedImageIds,
-      timeSpent
-    });
-    
-    res.json({
-      status: 'success',
-      data: {
-        id: game.id,
-        score: game.score,
-        completedAt: game.completedAt,
-        memoryImages: game.memoryImages,
-        allImages: game.allImages
-      }
-    });
+      const game = await gameService.submitGame({
+        gameId,
+        selectedImageIds,
+        timeSpent
+      });
+      
+      res.json({
+        status: 'success',
+        data: {
+          id: game.id,
+          score: game.score,
+          completedAt: game.completedAt,
+          memoryImages: game.memoryImages,
+          allImages: game.allImages
+        }
+      });
+    }
   }),
 
-  healthCheck: asyncHandler(async (req: Request, res: Response) => {
+  healthCheck: asyncHandler(async (_req: Request, res: Response) => {
     const isGeminiConnected = await geminiService.testConnection();
     
     res.json({
